@@ -1,1 +1,53 @@
-<p>task-form works!</p>
+<form [formGroup]="form">
+  <span *ngIf="!editedTask" class="p-text-secondary block mb-5"
+    >Fill the fields to create a new task</span
+  >
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="id" class="font-semibold w-6rem">Id</label>
+    <input
+      pInputText
+      id="id"
+      class="flex-auto"
+      autocomplete="off"
+      [disabled]="true"
+      [value]="id"
+    />
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="userId" class="font-semibold w-6rem">User ID</label>
+    <input
+      pInputText
+      id="userId"
+      class="flex-auto"
+      autocomplete="off"
+      formControlName="userId"
+      [value]="editedTask?.userId"
+    />
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="title" class="font-semibold w-6rem">Title</label>
+    <input
+      pInputText
+      id="title"
+      class="flex-auto"
+      autocomplete="off"
+      formControlName="title"
+      [value]="editedTask?.title"
+    />
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="body" class="font-semibold w-6rem">Body</label>
+    <input
+      pInputText
+      id="body"
+      class="flex-auto"
+      autocomplete="off"
+      formControlName="body"
+      [value]="editedTask?.body"
+    />
+  </div>
+  <div class="flex justify-content-end gap-2">
+    <p-button label="Cancel" severity="secondary" (onClick)="_hideDialog()" />
+    <p-button label="Save" (onClick)="_addTask()" />
+  </div>
+</form>
