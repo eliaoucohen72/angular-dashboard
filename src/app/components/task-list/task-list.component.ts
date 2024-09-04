@@ -41,7 +41,7 @@ export class TaskListComponent implements OnInit {
     { key: 'remove' },
   ];
   tasks: Task[] = [];
-  visible = false;
+  dialogVisible = false;
   editedTask: Task | null = null;
 
   constructor(
@@ -53,12 +53,23 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
+  openDialog(task: Task) {
+    this.editedTask = task;
+    this.dialogVisible = true;
+  }
+
+  hideDialog() {
+    this.editedTask = null;
+    this.dialogVisible = false;
+  }
+
+  // REQUESTS
   async loadTasks(): Promise<void> {
     try {
       this.tasks = await lastValueFrom(this.taskService.getAll());
     } catch (err) {
       console.error('Error fetching tasks:', err);
-      this.notificationService.show('Error during task retrieval');
+      this.notificationService.show('error', 'Error during task retrieval');
     }
   }
 
@@ -66,9 +77,10 @@ export class TaskListComponent implements OnInit {
     try {
       await lastValueFrom(this.taskService.delete(id));
       this.tasks = this.tasks.filter((task) => task.id !== id);
+      this.notificationService.show('success', 'Task successfully deleted');
     } catch (err) {
       console.error('Error deleting task:', err);
-      this.notificationService.show('Error during task deletion');
+      this.notificationService.show('error', 'Error during task deletion');
     }
   }
 
@@ -76,25 +88,21 @@ export class TaskListComponent implements OnInit {
     try {
       await lastValueFrom(this.taskService.create(task));
       this.tasks = [task, ...this.tasks];
+      this.notificationService.show('success', 'Task successfully added');
     } catch (err) {
       console.error('Error creating task:', err);
-      this.notificationService.show('Error during task creation');
+      this.notificationService.show('error', 'Error during task creation');
     }
   }
 
-  async editTask(task: Task): Promise<void> {
+  async updateTask(task: Task): Promise<void> {
     try {
       await lastValueFrom(this.taskService.edit(task));
       this.tasks = [task, ...this.tasks];
+      this.notificationService.show('success', 'Task successfully updated');
     } catch (err) {
+      this.notificationService.show('error', 'Error during task edition');
       console.error('Error editing task:', err);
-      this.notificationService.show('Error during task edition');
     }
-    this.editedTask = null;
-  }
-
-  openEditTaskForm(task: Task) {
-    this.editedTask = task;
-    this.visible = true;
   }
 }

@@ -1,6 +1,6 @@
 <div style="display: flex; flex-direction: column; gap: 20px">
   <div style="display: flex; justify-content: end">
-    <p-button (onClick)="visible = true" label="Add new task" />
+    <p-button (onClick)="dialogVisible = true" label="Add new task" />
   </div>
   <p-table [value]="tasks" styleClass="p-datatable-striped">
     <ng-template pTemplate="header">
@@ -23,14 +23,16 @@
         <td>
           <div style="display: flex; gap: 20px">
             <div
-              (click)="openEditTaskForm(task)"
+              aria-hidden="true"
               class="pi pi-pencil"
               style="cursor: pointer"
+              (click)="openDialog(task)"
             ></div>
             <div
-              (click)="deleteTask(task.id)"
-              class="pi pi-trash"
+              aria-hidden="true"
               style="cursor: pointer"
+              class="pi pi-trash"
+              (click)="deleteTask(task.id)"
             ></div>
           </div>
         </td>
@@ -39,15 +41,18 @@
   </p-table>
 </div>
 <p-dialog
+  *ngIf="dialogVisible"
+  (onHide)="hideDialog()"
   [draggable]="false"
   [header]="editedTask ? 'Edit a task' : 'Create a new task'"
   [modal]="true"
-  [(visible)]="visible"
+  [(visible)]="dialogVisible"
 >
   <app-task-form
-    [id]="editedTask ? editedTask.id : tasks.length + 1"
-    (hideDialog)="visible = false"
+    (hideDialog)="hideDialog()"
     (addTask)="addTask($event)"
+    (updateTask)="updateTask($event)"
+    [id]="editedTask?.id || tasks.length + 1"
     [editedTask]="editedTask"
   ></app-task-form>
 </p-dialog>

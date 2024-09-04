@@ -4,3 +4,5 @@ export interface Task {
   title: string;
   body: string;
 }
+
+export type NotificationType = 'success' | 'error'

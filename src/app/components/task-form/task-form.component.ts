@@ -10,6 +10,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { Task } from '../../interfaces';
 
 interface TaskFormGroup {
@@ -27,6 +28,7 @@ interface TaskFormGroup {
     DialogModule,
     InputTextModule,
     CommonModule,
+    InputTextareaModule,
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
@@ -58,23 +60,17 @@ export class TaskFormComponent implements OnInit {
     }
   }
 
-  _hideDialog() {
+  cancel() {
     this.hideDialog.emit(false);
   }
 
-  _addTask() {
-    if (this.form.valid) {
-      const task: Task = { ...(this.form.value as Task), id: this.id };
-      this.addTask.emit(task);
-      this.hideDialog.emit(false);
-    }
-  }
-
-  _updateTask() {
-    if (this.form.valid) {
-      const task: Task = { ...(this.form.value as Task), id: this.id };
+  save() {
+    const task: Task = { ...(this.form.value as Task), id: this.id };
+    if (this.editedTask) {
       this.updateTask.emit(task);
-      this.hideDialog.emit(false);
+    } else {
+      this.addTask.emit(task);
     }
+    this.hideDialog.emit(false);
   }
 }
