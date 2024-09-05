@@ -1,5 +1,5 @@
 <form [formGroup]="form">
-  <span *ngIf="!editedTask" class="p-text-secondary block mb-5"
+  <span *ngIf="!selectedTask" class="p-text-secondary block mb-5"
     >Fill the fields to create a new task</span
   >
   <div class="flex align-items-center gap-3 mb-3">
@@ -21,7 +21,7 @@
       class="flex-auto"
       autocomplete="off"
       formControlName="userId"
-      [value]="editedTask?.userId"
+      [value]="selectedTask?.userId"
     />
   </div>
   <div class="flex align-items-center gap-3 mb-3">
@@ -32,7 +32,7 @@
       class="flex-auto"
       autocomplete="off"
       formControlName="title"
-      [value]="editedTask?.title"
+      [value]="selectedTask?.title"
     />
   </div>
   <div class="flex align-items-center gap-3 mb-3">
@@ -43,7 +43,7 @@
       cols="30"
       id="body"
       formControlName="body"
-      [value]="editedTask?.body"
+      [value]="selectedTask?.body"
       [autoResize]="true"
     >
     </textarea>

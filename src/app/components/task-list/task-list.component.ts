@@ -5,8 +5,8 @@ import { lastValueFrom } from 'rxjs';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 
-import { TaskService } from '../../services/task.service';
-import { Task } from '../../interfaces';
+import { TaskService } from '../../services/task/task.service';
+import { Task, User } from '../../interfaces';
 import { NotificationService } from '../../services/notification/notification.service';
 import { TaskFormComponent } from '../task-form/task-form.component';
 import { DialogModule } from 'primeng/dialog';
@@ -33,6 +33,7 @@ interface Column {
   styleUrl: './task-list.component.scss',
 })
 export class TaskListComponent implements OnInit {
+  user: User | null = null;
   columns: Column[] = [
     { key: 'id', header: 'id' },
     { key: 'userId', header: 'User ID' },
@@ -42,7 +43,8 @@ export class TaskListComponent implements OnInit {
   ];
   tasks: Task[] = [];
   dialogVisible = false;
-  editedTask: Task | null = null;
+  selectedTask: Task | null = null;
+  editMode = false;
 
   constructor(
     private taskService: TaskService,
@@ -53,13 +55,14 @@ export class TaskListComponent implements OnInit {
     this.loadTasks();
   }
 
-  openDialog(task: Task) {
-    this.editedTask = task;
+  openDialog(task: Task, editMode = false) {
+    this.selectedTask = task;
     this.dialogVisible = true;
+    this.editMode = editMode;
   }
 
   hideDialog() {
-    this.editedTask = null;
+    this.selectedTask = null;
     this.dialogVisible = false;
   }
 
@@ -67,42 +70,38 @@ export class TaskListComponent implements OnInit {
   async loadTasks(): Promise<void> {
     try {
       this.tasks = await lastValueFrom(this.taskService.getAll());
-    } catch (err) {
-      console.error('Error fetching tasks:', err);
-      this.notificationService.show('error', 'Error during task retrieval');
+    } catch (err: unknown) {
+      console.error('Error fetching task:', err);
     }
   }
 
   async deleteTask(id: number): Promise<void> {
     try {
       await lastValueFrom(this.taskService.delete(id));
-      this.tasks = this.tasks.filter((task) => task.id !== id);
       this.notificationService.show('success', 'Task successfully deleted');
-    } catch (err) {
+      await this.loadTasks();
+    } catch (err: unknown) {
       console.error('Error deleting task:', err);
-      this.notificationService.show('error', 'Error during task deletion');
     }
   }
 
   async addTask(task: Task): Promise<void> {
     try {
       await lastValueFrom(this.taskService.create(task));
-      this.tasks = [task, ...this.tasks];
       this.notificationService.show('success', 'Task successfully added');
-    } catch (err) {
+      await this.loadTasks();
+    } catch (err: unknown) {
       console.error('Error creating task:', err);
-      this.notificationService.show('error', 'Error during task creation');
     }
   }
 
   async updateTask(task: Task): Promise<void> {
     try {
       await lastValueFrom(this.taskService.edit(task));
-      this.tasks = [task, ...this.tasks];
       this.notificationService.show('success', 'Task successfully updated');
-    } catch (err) {
-      this.notificationService.show('error', 'Error during task edition');
-      console.error('Error editing task:', err);
+      await this.loadTasks();
+    } catch (err: unknown) {
+      console.error('Error updating task:', err);
     }
   }
 }

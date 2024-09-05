@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.addTask {
+  display: flex;
+  justify-content: end;
+}
+
+.link {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.controls {
+  display: flex;
+  gap: 20px;
+}
+
+.pointer {
+  cursor: pointer;
+}

@@ -1,0 +1,29 @@
+<div class="wrapper">
+  <form [formGroup]="form" class="form">
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="username" class="font-semibold w-6rem">Username</label>
+      <input
+        pInputText
+        id="username"
+        class="flex-auto"
+        formControlName="username"
+        autocomplete="username"
+      />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+      <label for="password" class="font-semibold w-6rem">Password</label>
+      <input
+        pInputText
+        id="password"
+        class="flex-auto"
+        formControlName="password"
+        type="password"
+        autocomplete="current-password"
+      />
+    </div>
+
+    <div class="flex justify-content-center gap-2">
+      <p-button label="Login" (onClick)="login()" />
+    </div>
+  </form>
+</div>

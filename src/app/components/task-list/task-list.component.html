@@ -1,7 +1,9 @@
-<div style="display: flex; flex-direction: column; gap: 20px">
-  <div style="display: flex; justify-content: end">
-    <p-button (onClick)="dialogVisible = true" label="Add new task" />
-  </div>
+<div class="wrapper">
+  <p-button
+    class="addTask"
+    (onClick)="dialogVisible = true"
+    label="Add new task"
+  />
   <p-table [value]="tasks" styleClass="p-datatable-striped">
     <ng-template pTemplate="header">
       <tr>
@@ -15,23 +17,25 @@
         <td>{{ task.id }}</td>
         <td>{{ task.userId }}</td>
         <td>
-          <a [routerLink]="['/tasks', task.id]">
+          <div
+            aria-hidden="true"
+            class="link"
+            (click)="openDialog(task, false)"
+          >
             {{ task.title }}
-          </a>
+          </div>
         </td>
         <td>{{ task.body }}</td>
         <td>
-          <div style="display: flex; gap: 20px">
+          <div class="controls">
             <div
               aria-hidden="true"
-              class="pi pi-pencil"
-              style="cursor: pointer"
-              (click)="openDialog(task)"
+              class="pi pi-pencil pointer"
+              (click)="openDialog(task, true)"
             ></div>
             <div
               aria-hidden="true"
-              style="cursor: pointer"
-              class="pi pi-trash"
+              class="pi pi-trash pointer"
               (click)="deleteTask(task.id)"
             ></div>
           </div>
@@ -44,7 +48,13 @@
   *ngIf="dialogVisible"
   (onHide)="hideDialog()"
   [draggable]="false"
-  [header]="editedTask ? 'Edit a task' : 'Create a new task'"
+  [header]="
+    selectedTask
+      ? editMode
+        ? 'Edit a task'
+        : 'Task details'
+      : 'Create a new task'
+  "
   [modal]="true"
   [(visible)]="dialogVisible"
 >
@@ -52,7 +62,8 @@
     (hideDialog)="hideDialog()"
     (addTask)="addTask($event)"
     (updateTask)="updateTask($event)"
-    [id]="editedTask?.id || tasks.length + 1"
-    [editedTask]="editedTask"
+    [id]="selectedTask?.id || tasks.length + 1"
+    [selectedTask]="selectedTask"
+    [editMode]="editMode"
   ></app-task-form>
 </p-dialog>

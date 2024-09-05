@@ -2,7 +2,7 @@ import { HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { inject } from '@angular/core';
-import { SpinnerService } from '../services/spinner/spinner.service';
+import { SpinnerService } from '../../services/spinner/spinner.service';
 
 export function loadingInterceptor(
   req: HttpRequest<unknown>,
