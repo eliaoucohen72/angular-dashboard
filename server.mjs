@@ -1,6 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import axios from "axios";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
@@ -11,6 +12,8 @@ let tasksDB = [];
 
 // Middleware pour parser les requêtes JSON
 app.use(express.json());
+
+app.use(cors());
 
 // Fonction pour générer un JWT
 function generateToken(user) {
