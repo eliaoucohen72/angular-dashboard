@@ -16,6 +16,6 @@ This is a basic dashboard application built with **Angular**, featuring a login 
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/eliaoucohen72/angular-dashboard.git
    npm i
    npm run start - It will run the server and the client
