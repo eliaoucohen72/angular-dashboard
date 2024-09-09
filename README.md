@@ -1,5 +1,3 @@
-### Dashboard (Angular)
-```markdown
 # Dashboard Application
 
 ## Description
@@ -19,4 +17,3 @@ This is a basic dashboard application built with **Angular**, featuring a login 
 1. Clone the repository:
    ```bash
    git clone <repo-url>
-   npm run start - It will run the server and the client
